@@ -1,6 +1,5 @@
 # Graph-Dijkstra
-Perl CPAN package, Graph::Dijkstra, that provides general purpose graph functions with Dijkstra farthest node and shortest path computations
-Includes methods that input/output graph datasets from/to supported file formats
+Perl CPAN package, Graph::Dijkstra, that provides general purpose graph functions with Dijkstra farthest node and shortest path computations.  Provides methods that input/output graph datasets from/to supported file formats.
 
 DESCRIPTION
 
@@ -155,8 +154,8 @@ TODOs
 
 Add data attributes including:
 
-  node graph coordinates (xy coordinates and/or lat/long),
-  node and edge style (eg., line style, color)
+    xy coordinates and/or lat/long to Node elements
+    style (eg., line style, color) to Node and Edge elements
 
 Review and update inputGraphfrom[format] methods to consistently set default edge weight to 1 or allow caller to provide default edge weight.
 
@@ -170,7 +169,7 @@ Evaluate and refactor code to move the input/output graph functions to one or mo
     use Graph::Dijkstra::Input;
     my $graph = Graph::Dijkstra::Input::inputGraphfromGraphML($filename);
  
-Or maybe as functional call
+Or maybe as function call
  
     my $graph = inputGraphfromGraphML($filename);
 
