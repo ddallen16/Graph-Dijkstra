@@ -1,6 +1,5 @@
 # Graph-Dijkstra
-Perl package Graph::Dijkstra
-General purpose graph functions with Dijkstra farthest node and shortest path computations
+Perl CPAN package, Graph::Dijkstra, that provides general purpose graph functions with Dijkstra farthest node and shortest path computations
 Includes methods that input/output graph datasets from/to supported file formats
 
 DESCRIPTION
@@ -46,113 +45,111 @@ If you encounter a problem or have suggested improvements, please email the auth
 
 SYNOPSIS
 
-  use Graph::Dijkstra;
-  
-  # create the object
-  my $graph = Graph::Dijkstra->new();  #create the graph object with default attribute values
-  my $graph = Graph::Dijkstra->new( {label=>'my graph label', creator=>'my name', edgedefault=>'undirected'} );  #create the graph object setting the label, creator, and/or edgedefault attibutes
-  my $graph = Graph::Dijkstra->inputGraphfromCSV($filename);  #load graph from supported file format creating the graph object.
-  
-  #SET method to update graph attributes
-  $graph->graph( {label=>'my graph label', creator=>'my name', edgedefault='directed'} );
-  
-  #GET method to return graph attributes in hash (reference)(eg., $graphAttribs->{label}, $graphAttribs->{creator})
-  my $graphAttribs = $graph->graph();
-  my $graphLabel = $graph->graph()->{label}; #references label attribute of graph
-  
-  #SET methods to create, update, and delete (remove) nodes and edges
-  $graph->node( {id=>0, label=>'nodeA'} );   #create or update existing node.  id must be a simple scalar.
-  $graph->node( {id=>1, label=>'nodeB'} );   #label is optional and should be string
-  $graph->node( {id=>2, label=>'nodeC'} );
-  $graph->edge( {sourceID=>0, targetID=>1, weight=>3, id=>'A', label=>'edge 0 to 1', directed='directed'} );  #create or update edge between sourceID and targetID;  weight (cost) must be > 0
-  $graph->edge( {sourceID=>1, targetID=>2, weight=>2} );
-  $graph->removeNode( 0 );
-  $graph->removeEdge( {sourceID=>0, targetID=1} );
-  
-  #GET methods for nodes and edges
-  my $nodeAttribs = $graph->node( 0 );  #returns hash reference (eg., $nodeAttribs->{id}, $nodeAttribs->{label}) or undef if node id 0 not found
-  my $nodeLabel = $graph->node( 0 )->{label}; #references label attribute of node with ID value of 0
-  my $bool = $graph->nodeExists( 0 );
-  my $edgeAttribs = $graph->edge( { sourceID=>0, targetID=>1} );
-  my $edgeWeight = $graph->edge( { sourceID=>0, targetID=>1} )->{weight};  #references weight attribute of edge that connects sourceID to targetID
-  my $bool = $graph->edgeExists( { sourceID=>0, targetID=>1 } );
-  my @nodes = $graph->nodeList();  #returns array of all nodes in the internal graph, each array element is a hash (reference) containing the node ID and label attributes
-  my $bool = $graph->adjacent( { sourceID=>0, targetID=>1 } );
-  my @nodes = $graph->adjacentNodes( 0 ); #returns list of node IDs connected by an edge with node ID 0
-  
-  #methods to input graph from a supported file format
-  #inputGraphfrom[Format] methods can also be invoked as class methods which return the graph object on success
-  $graph->inputGraphfromGML('mygraphfile.gml');
-  $graph->inputGraphfromCSV('mygraphfile.csv');
-  my $graph = Graph::Dijkstra->inputGraphfromCSV('mygraphfile.csv');
-  $graph->inputGraphfromJSON('mygraphfile.json');   #JSON Graph Specification
-  $graph->inputGraphfromGraphML('mygraphfile.graphml.xml', {keyEdgeValueID => 'weight', keyNodeLabelID => 'name'} );
-  $graph->inputGraphfromGEXF('mygraphfile.gexf.xml' );
-  $graph->inputGraphfromNET('mygraphfile.pajek.net' );   #NET (Pajek) format
-  
-  #methods to output internal graph to a supported file format
-  $graph->outputGraphtoGML('mygraphfile.gml', 'creator name');
-  $graph->outputGraphtoCSV('mygraphfile.csv');
-  $graph->outputGraphtoJSON('mygraphfile.json');
-  $graph->outputGraphtoGraphML('mygraphfile.graphml.xml', {keyEdgeWeightID => 'weight',keyEdgeWeightAttrName => 'weight', keyNodeLabelID => 'name', keyNodeLabelID => 'name'});
-  $graph->outputGraphtoGEXF('mygraphfile.gexf.xml');
-  $graph->outputGraphtoNET('mygraphfile.pajek.net');
-  
-  #class methods that validate the contents of XML files against the GraphML and GEXF schemas
-  my ($bool, $errmsg) = Graph::Dijkstra->validateGraphMLxml('mygraphfile.graphml.xml');
-  my ($bool, $errmsg) = Graph::Dijkstra->validateGEXFxml('mygraphfile.gexf.xml');
-  
-  #Dijkstra shortest path computation methods
-  
-  use Data::Dumper;
-  my %Solution = ();
-  
-  #shortest path to farthest node from origin node
-  %Solution = (originID => 0);
-  if (my $solutionWeight = $graph->farthestNode( \%Solution )) {
-        print Dumper(\%Solution);
-  }
-  
-  #shortest path between two nodes (from origin to destination)
-  %Solution = (originID => 0, destinationID => 2);
-  if (my $pathCost = $graph->shortestPath( \%Solution ) ) {
-        print Dumper(\%Solution);
-  }
-  
-  #Jordan or vertex center with all points shortest path (APSP) matrix
-  my %solutionMatrix = ();
-  if (my $graphMinMax = $graph->vertexCenter(\%solutionMatrix) ) {
-        print  {$verboseOutfile} "Center Node Set 'eccentricity', minimal greatest distance to all other nodes $graphMinMax\n";
-        print  {$verboseOutfile} "Center Node Set = ", join(',', @{$solutionMatrix{centerNodeSet}} ), "\n";
+        use Graph::Dijkstra;
         
-        my @nodeList = (sort keys %{$solutionMatrix{row}});
-        print  {$verboseOutfile} 'From/To,', join(',',@nodeList), "\n";
-        foreach my $fromNode (@nodeList) {
-                print  {$verboseOutfile} "$fromNode";
-                foreach my $toNode (@nodeList) {
-                        print  {$verboseOutfile} ",$solutionMatrix{row}{$fromNode}{$toNode}";
-                }
-                print  {$verboseOutfile} "\n";
+        # create the object
+        my $graph = Graph::Dijkstra->new();  #create the graph object with default attribute values
+        my $graph = Graph::Dijkstra->new( {label=>'my graph label', creator=>'my name', edgedefault=>'undirected'} );  #create the graph object setting the label, creator, and/or edgedefault attibutes
+        my $graph = Graph::Dijkstra->inputGraphfromCSV($filename);  #load graph from supported file format creating the graph object.
+        
+        #SET method to update graph attributes
+        $graph->graph( {label=>'my graph label', creator=>'my name', edgedefault='directed'} );
+        
+        #GET method to return graph attributes in hash (reference)(eg., $graphAttribs->{label}, $graphAttribs->{creator})
+        my $graphAttribs = $graph->graph();
+        my $graphLabel = $graph->graph()->{label}; #references label attribute of graph
+        
+        #SET methods to create, update, and delete (remove) nodes and edges
+        $graph->node( {id=>0, label=>'nodeA'} );   #create or update existing node.  id must be a simple scalar.
+        $graph->node( {id=>1, label=>'nodeB'} );   #label is optional and should be string
+        $graph->node( {id=>2, label=>'nodeC'} );
+        $graph->edge( {sourceID=>0, targetID=>1, weight=>3, id=>'A', label=>'edge 0 to 1', directed='directed'} );  #create or update edge between sourceID and targetID;  weight (cost) must be > 0
+        $graph->edge( {sourceID=>1, targetID=>2, weight=>2} );
+        $graph->removeNode( 0 );
+        $graph->removeEdge( {sourceID=>0, targetID=1} );
+        
+        #GET methods for nodes and edges
+        my $nodeAttribs = $graph->node( 0 );  #returns hash reference (eg., $nodeAttribs->{id}, $nodeAttribs->{label}) or undef if node id 0 not found
+        my $nodeLabel = $graph->node( 0 )->{label}; #references label attribute of node with ID value of 0
+        my $bool = $graph->nodeExists( 0 );
+        my $edgeAttribs = $graph->edge( { sourceID=>0, targetID=>1} );
+        my $edgeWeight = $graph->edge( { sourceID=>0, targetID=>1} )->{weight};  #references weight attribute of edge that connects sourceID to targetID
+        my $bool = $graph->edgeExists( { sourceID=>0, targetID=>1 } );
+        my @nodes = $graph->nodeList();  #returns array of all nodes in the internal graph, each array element is a hash (reference) containing the node ID and label attributes
+        my $bool = $graph->adjacent( { sourceID=>0, targetID=>1 } );
+        my @nodes = $graph->adjacentNodes( 0 ); #returns list of node IDs connected by an edge with node ID 0
+        
+        #methods to input graph from a supported file format
+        #inputGraphfrom[Format] methods can also be invoked as class methods which return the graph object on success
+        $graph->inputGraphfromGML('mygraphfile.gml');
+        $graph->inputGraphfromCSV('mygraphfile.csv');
+        my $graph = Graph::Dijkstra->inputGraphfromCSV('mygraphfile.csv');
+        $graph->inputGraphfromJSON('mygraphfile.json');   #JSON Graph Specification
+        $graph->inputGraphfromGraphML('mygraphfile.graphml.xml', {keyEdgeValueID => 'weight', keyNodeLabelID => 'name'} );
+        $graph->inputGraphfromGEXF('mygraphfile.gexf.xml' );
+        $graph->inputGraphfromNET('mygraphfile.pajek.net' );   #NET (Pajek) format
+        
+        #methods to output internal graph to a supported file format
+        $graph->outputGraphtoGML('mygraphfile.gml', 'creator name');
+        $graph->outputGraphtoCSV('mygraphfile.csv');
+        $graph->outputGraphtoJSON('mygraphfile.json');
+        $graph->outputGraphtoGraphML('mygraphfile.graphml.xml', {keyEdgeWeightID => 'weight',keyEdgeWeightAttrName => 'weight', keyNodeLabelID => 'name', keyNodeLabelID => 'name'});
+        $graph->outputGraphtoGEXF('mygraphfile.gexf.xml');
+        $graph->outputGraphtoNET('mygraphfile.pajek.net');
+        
+        #class methods that validate the contents of XML files against the GraphML and GEXF schemas
+        my ($bool, $errmsg) = Graph::Dijkstra->validateGraphMLxml('mygraphfile.graphml.xml');
+        my ($bool, $errmsg) = Graph::Dijkstra->validateGEXFxml('mygraphfile.gexf.xml');
+        
+        #Dijkstra shortest path computation methods
+        
+        use Data::Dumper;
+        my %Solution = ();
+        
+        #shortest path to farthest node from origin node
+        %Solution = (originID => 0);
+        if (my $solutionWeight = $graph->farthestNode( \%Solution )) {
+          print Dumper(\%Solution);
         }
-        $graph->outputAPSPmatrixtoCSV(\%solutionMatrix, 'APSP.csv');
-  }
-  
-  #Alternative implementation of Jordan (vertex center) with APSP matrix method using Floyd Warhsall algorithm
-  %solutionMatrix = ();
-  my $graphMinMax = $graph->vertexCenterFloydWarshall(\%solutionMatrix);
-  
-  
-  #Misc class methods
-  
-  #turn on / off verbose output to STDOUT or optional $filehandle
-  Dijkstra::Graph->VERBOSE($bool, $filehandle);   
-   
-  #attribute hashRef to string
-  my $attribStr = $graph->stringifyAttribs( $graph->graph() );  #( creator=>'', edgedefault=>'undirected', label=>'' )
-  
-  #string to attribute hashRef
-  my $attribHref = Dijkstra::Graph->hashifyAttribs( $attribStr );   #{'creator' => '', 'edgedefault' => 'undirected', 'label' => '' }
-
+        
+        #shortest path between two nodes (from origin to destination)
+        %Solution = (originID => 0, destinationID => 2);
+        if (my $pathCost = $graph->shortestPath( \%Solution ) ) {
+          print Dumper(\%Solution);
+        }
+        
+        #Jordan or vertex center with all points shortest path (APSP) matrix
+        my %solutionMatrix = (); 
+        if (my $graphMinMax = $graph->vertexCenter(\%solutionMatrix) ) {
+          print  {$verboseOutfile} "Center Node Set 'eccentricity', minimal greatest distance to all other nodes $graphMinMax\n";
+          print  {$verboseOutfile} "Center Node Set = ", join(',', @{$solutionMatrix{centerNodeSet}} ), "\n";
+          
+          my @nodeList = (sort keys %{$solutionMatrix{row}});
+          print  {$verboseOutfile} 'From/To,', join(',',@nodeList), "\n";
+          foreach my $fromNode (@nodeList) {
+            print  {$verboseOutfile} "$fromNode";
+            foreach my $toNode (@nodeList) {
+              print  {$verboseOutfile} ",$solutionMatrix{row}{$fromNode}{$toNode}";
+            }
+            print  {$verboseOutfile} "\n";
+          }
+          $graph->outputAPSPmatrixtoCSV(\%solutionMatrix, 'APSP.csv');
+       }
+       
+       #Alternative implementation of Jordan (vertex center) with APSP matrix method using Floyd Warhsall algorithm
+       
+       %solutionMatrix = ();
+       my $graphMinMax = $graph->vertexCenterFloydWarshall(\%solutionMatrix);
+       
+       #Misc class methods
+       #turn on / off verbose output to STDOUT or optional $filehandle
+       Dijkstra::Graph->VERBOSE($bool, $filehandle);   
+       
+       #attribute hashRef to string
+       my $attribStr = $graph->stringifyAttribs( $graph->graph() );  #( creator=>'', edgedefault=>'undirected', label=>'' )
+          
+       #string to attribute hashRef
+       my $attribHref = Dijkstra::Graph->hashifyAttribs( $attribStr );   #{'creator'=>'', 'edgedefault'=>'undirected', 'label'=>'' }
 
 TODOs
 
@@ -169,14 +166,13 @@ Add validateJSONgraph class method that validates contents of JSON file against 
 
 Evaluate and refactor code to move the input/output graph functions to one or more separate packages to reduce the code size of the Graph::Dijkstra package. For example, put the input graph from file methods in a separate package and refactor to return a graph object. For example:
 
-  use Graph::Dijkstra;
-  use Graph::Dijkstra::Input;
-   
-  my $graph = Graph::Dijkstra::Input::inputGraphfromGraphML($filename);
+    use Graph::Dijkstra;
+    use Graph::Dijkstra::Input;
+    my $graph = Graph::Dijkstra::Input::inputGraphfromGraphML($filename);
  
-#or maybe as functional call
+Or maybe as functional call
  
-  my $graph = inputGraphfromGraphML($filename);
+    my $graph = inputGraphfromGraphML($filename);
 
 Evaluate support for user defined graph, node, and edge attributes (metadata).
 
